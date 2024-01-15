@@ -15,7 +15,7 @@ export default async function Home() {
       <div className='container max-w-3xl'>
         <Form />
 
-        <div className='mt-40'>
+        <div className='mt-44'>
           <h2 className='text-xl font-semibold leading-none tracking-tight'>
             Recent blogs
           </h2>

@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Header from '@/components/header'
+import { ClerkProvider } from '@clerk/nextjs'
+import { Toaster } from '@/components/ui/sonner'
+
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,10 +20,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={inter.className}>
-        <Header />
-        <main>{children}</main>
-      </body>
+      <ClerkProvider>
+        <body className={inter.className}>
+          <Header />
+          <main>{children}</main>
+          <Toaster position='top-right' theme='light' richColors />
+        </body>
+      </ClerkProvider>
     </html>
   )
 }

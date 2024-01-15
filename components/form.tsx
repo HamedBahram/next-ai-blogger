@@ -1,8 +1,10 @@
 'use client'
 
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils'
-import { createCompletion } from '@/app/actions'
 import { useFormStatus } from 'react-dom'
+import { createCompletion } from '@/app/actions'
+import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs'
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -15,6 +17,19 @@ import {
 } from '@/components/ui/card'
 
 export default function Form() {
+  async function action(formData: FormData) {
+    const prompt = formData.get('prompt')
+    if (!prompt) {
+      toast.error('Prompt is required.')
+      return
+    }
+
+    const { error } = await createCompletion(prompt as string)
+    if (error) {
+      toast.error(error)
+    }
+  }
+
   return (
     <section className='mx-auto max-w-lg'>
       <Card className='border-0 shadow-none'>
@@ -23,7 +38,7 @@ export default function Form() {
           <CardDescription>Generate a blog post about anything</CardDescription>
         </CardHeader>
         <CardContent>
-          <form action={createCompletion} className='mt-3'>
+          <form action={action} className='mt-3'>
             <Input
               name='prompt'
               placeholder='What should I write about?'
@@ -41,12 +56,29 @@ function SubmitButton() {
   const { pending } = useFormStatus()
 
   return (
-    <Button
-      size='sm'
-      type='submit'
-      className={cn('mt-3 w-full rounded-lg', pending && 'animate-pulse')}
-    >
-      {pending ? 'Working on it...' : 'Submit'}
-    </Button>
+    <>
+      <SignedIn>
+        <Button
+          size='sm'
+          type='submit'
+          className={cn('mt-3 w-full rounded-lg', pending && 'animate-pulse')}
+        >
+          {pending ? 'Working on it...' : 'Submit'}
+        </Button>
+      </SignedIn>
+
+      <SignedOut>
+        <SignInButton mode='modal'>
+          <Button
+            size='sm'
+            type='button'
+            variant='secondary'
+            className='mt-3 w-full rounded-lg'
+          >
+            Sign in to start
+          </Button>
+        </SignInButton>
+      </SignedOut>
+    </>
   )
 }
