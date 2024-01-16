@@ -22,7 +22,7 @@ export async function createCompletion(prompt: string) {
   const messages: any = [
     {
       role: 'user',
-      content: `Write a blog post around 200 words about the following topic: "${prompt}". Return the response in markdown format.`
+      content: `Write a blog post around 200 words about the following topic: "${prompt}" in markdown format.`
     }
   ]
 
