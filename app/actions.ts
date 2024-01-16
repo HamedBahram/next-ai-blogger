@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 import { decode } from 'base64-arraybuffer'
 import { supabase } from '@/lib/supabase'
 import { revalidatePath } from 'next/cache'
-import { auth, currentUser } from '@clerk/nextjs'
+import { auth } from '@clerk/nextjs'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
