@@ -2,10 +2,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { formatDate } from '@/lib/utils'
-import { getAllBlogs } from '@/lib/supabase'
 
 import Form from '@/components/form'
 import { Card, CardContent } from '@/components/ui/card'
+import { getAllBlogs } from '@/lib/blogs'
 
 export const maxDuration = 60
 
@@ -38,7 +38,7 @@ export default async function Home() {
                     <div className='px-4 pb-3 pt-2'>
                       <h3 className='font-medium'>{blog.title}</h3>
                       <p className='text-xs text-gray-600'>
-                        {formatDate(blog.created_at)}
+                        {formatDate(blog.createdAt)}
                       </p>
                     </div>
                   </Link>

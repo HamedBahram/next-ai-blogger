@@ -3,9 +3,12 @@
 import OpenAI from 'openai'
 import { redirect } from 'next/navigation'
 import { decode } from 'base64-arraybuffer'
-import { supabase } from '@/lib/supabase'
+
+import { put } from '@vercel/blob'
+
 import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs'
+import prisma from '@/lib/prisma'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
@@ -50,29 +53,27 @@ export async function createCompletion(prompt: string) {
     return { error: 'Unable to generate the blog image.' }
   }
 
-  const { data, error } = await supabase.storage
-    .from('blogs')
-    .upload(imageName, decode(imageData), {
-      contentType: 'image/png'
-    })
-  if (error) {
+  const { url } = await put(imageName, decode(imageData), {
+    access: 'public'
+  })
+
+  if (!url) {
     return { error: 'Unable to upload the blog image to Storage.' }
   }
 
-  const path = data?.path
-  const imageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/blogs/${path}`
+  const blog = await prisma.blog.create({
+    data: {
+      title: prompt,
+      content,
+      imageUrl: url,
+      userId
+    }
+  })
 
-  const { data: blog, error: blogError } = await supabase
-    .from('blogs')
-    .insert([{ title: prompt, content, imageUrl, userId }])
-    .select()
-
-  if (blogError) {
+  if (!blog) {
     return { error: 'Unable to insert the blog into the database.' }
   }
 
-  const blogId = blog?.[0]?.id
-
   revalidatePath('/')
-  redirect(`/blog/${blogId}`)
+  redirect(`/blog/${blog.id}`)
 }

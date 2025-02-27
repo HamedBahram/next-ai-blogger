@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
+    "@prisma/client": "6.4.1",
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/supabase-js": "^2.39.3",
+    "@vercel/blob": "^0.27.2",
     "ai": "^2.2.31",
     "base64-arraybuffer": "^1.0.2",
     "class-variance-authority": "^0.7.0",
@@ -39,7 +41,9 @@
     "postcss": "^8",
     "prettier": "^3.2.1",
     "prettier-plugin-tailwindcss": "^0.5.11",
+    "prisma": "^6.4.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }

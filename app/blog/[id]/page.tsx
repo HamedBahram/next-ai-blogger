@@ -1,11 +1,19 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import Markdown from 'react-markdown'
-import { getBlogById } from '@/lib/supabase'
+
 import { ChevronLeft } from 'lucide-react'
+import { getBlogById } from '@/lib/blogs'
+import { notFound } from 'next/navigation'
 
 export default async function Blog({ params }: { params: { id: string } }) {
-  const { content, imageUrl } = await getBlogById(Number(params.id))
+  const blog = await getBlogById(params.id)
+
+  if (!blog) {
+    notFound()
+  }
+
+  const { imageUrl, content } = blog
 
   return (
     <section className='py-12'>
