@@ -10,8 +10,8 @@ datasource db {
 model Blog {
   id        String   @id @default(cuid())
   title     String
-  content   String
-  imageUrl  String
+  content   String?
+  imageUrl  String?
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

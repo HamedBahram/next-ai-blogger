@@ -7,7 +7,7 @@ import Form from '@/components/form'
 import { Card, CardContent } from '@/components/ui/card'
 import { getAllBlogs } from '@/lib/blogs'
 
-export const maxDuration = 60
+// export const maxDuration = 60
 
 export default async function Home() {
   const blogs = await getAllBlogs()
@@ -27,13 +27,17 @@ export default async function Home() {
               <Card key={blog.id} className='overflow-hidden'>
                 <CardContent className='p-0'>
                   <Link href={`/blog/${blog.id}`} key={blog.id}>
-                    <Image
-                      alt=''
-                      src={blog.imageUrl}
-                      width={200}
-                      height={200}
-                      className='w-full'
-                    />
+                    {blog.imageUrl ? (
+                      <Image
+                        alt=''
+                        src={blog.imageUrl}
+                        width={200}
+                        height={200}
+                        className='aspect-video w-full object-cover'
+                      />
+                    ) : (
+                      <div className='aspect-video w-full bg-gray-200' />
+                    )}
 
                     <div className='px-4 pb-3 pt-2'>
                       <h3 className='font-medium'>{blog.title}</h3>
